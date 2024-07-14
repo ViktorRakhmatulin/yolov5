@@ -45,7 +45,7 @@ def ap_per_class(tp, conf, pred_cls, target_cls, plot=False, save_dir=".", names
     # Sort by objectness
     i = np.argsort(-conf)
     tp, conf, pred_cls = tp[i], conf[i], pred_cls[i]
-
+    
     # Find unique classes
     unique_classes, nt = np.unique(target_cls, return_counts=True)
     nc = unique_classes.shape[0]  # number of classes, number of detections
@@ -344,11 +344,12 @@ def plot_pr_curve(px, py, ap, save_dir=Path("pr_curve.png"), names=()):
 
     if 0 < len(names) < 21:  # display per-class legend if < 21 classes
         for i, y in enumerate(py.T):
-            ax.plot(px, y, linewidth=1, label=f"{names[i]} {ap[i, 0]:.3f}")  # plot(recall, precision)
+            ax.plot(px, y, linewidth=1, label=f"{names[0]} {ap[0, 0]:.3f}")
+            break 
     else:
         ax.plot(px, py, linewidth=1, color="grey")  # plot(recall, precision)
 
-    ax.plot(px, py.mean(1), linewidth=3, color="blue", label="all classes %.3f mAP@0.5" % ap[:, 0].mean())
+    # ax.plot(px, py.mean(1), linewidth=3, color="blue", label="all classes %.3f mAP@0.5" % ap[:, 0].mean())
     ax.set_xlabel("Recall")
     ax.set_ylabel("Precision")
     ax.set_xlim(0, 1)
@@ -366,12 +367,13 @@ def plot_mc_curve(px, py, save_dir=Path("mc_curve.png"), names=(), xlabel="Confi
 
     if 0 < len(names) < 21:  # display per-class legend if < 21 classes
         for i, y in enumerate(py):
-            ax.plot(px, y, linewidth=1, label=f"{names[i]}")  # plot(confidence, metric)
+            ax.plot(px, y, linewidth=1, label=f"{names[0]}")  # plot(confidence, metric)
+            break
     else:
         ax.plot(px, py.T, linewidth=1, color="grey")  # plot(confidence, metric)
 
     y = smooth(py.mean(0), 0.05)
-    ax.plot(px, y, linewidth=3, color="blue", label=f"all classes {y.max():.2f} at {px[y.argmax()]:.3f}")
+    # ax.plot(px, y, linewidth=3, color="blue", label=f"all classes {y.max():.2f} at {px[y.argmax()]:.3f}")
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_xlim(0, 1)

@@ -247,8 +247,10 @@ def run(
             preds = non_max_suppression(
                 preds, conf_thres, iou_thres, labels=lb, multi_label=True, agnostic=single_cls, max_det=max_det
             )
+            
+            class_idx = 0  # car
+            preds = [det[det[:, -1] == class_idx] for det in preds]
 
-        # Metrics
         for si, pred in enumerate(preds):
             labels = targets[targets[:, 0] == si, 1:]
             nl, npr = labels.shape[0], pred.shape[0]  # number of labels, predictions
@@ -288,9 +290,9 @@ def run(
             callbacks.run("on_val_image_end", pred, predn, path, names, im[si])
 
         # Plot images
-        if plots and batch_i < 3:
-            plot_images(im, targets, paths, save_dir / f"val_batch{batch_i}_labels.jpg", names)  # labels
-            plot_images(im, output_to_target(preds), paths, save_dir / f"val_batch{batch_i}_pred.jpg", names)  # pred
+        # if plots and batch_i < 3:
+            # plot_images(im, targets, paths, save_dir / f"val_batch{batch_i}_labels.jpg", names)  # labels
+            # plot_images(im, output_to_target(preds), paths, save_dir / f"val_batch{batch_i}_pred.jpg", names)  # pred
 
         callbacks.run("on_val_batch_end", batch_i, im, targets, paths, shapes, preds)
 
@@ -304,7 +306,7 @@ def run(
 
     # Print results
     pf = "%22s" + "%11i" * 2 + "%11.3g" * 4  # print format
-    LOGGER.info(pf % ("all", seen, nt.sum(), mp, mr, map50, map))
+    # LOGGER.info(pf % ("all", seen, nt.sum(), mp, mr, map50, map))
     if nt.sum() == 0:
         LOGGER.warning(f"WARNING ⚠️ no labels found in {task} set, can not compute metrics without labels")
 
