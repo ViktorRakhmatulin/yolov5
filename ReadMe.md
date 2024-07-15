@@ -29,9 +29,15 @@ This project provides a Docker-based deployment setup for finetuned YOLOv5 model
     ./build_and_run.sh /home/viktor/Skoltech_project/dataset-vehicles /home/viktor/Skoltech_project/yolov5/weights
     ```
 
-## Weights
+## Weights and Data
 
-Download the pre-trained weights from [Google Drive](https://drive.google.com/drive/folders/147qwUiIeG1AENag_VvCfeatFqwPouiKu?usp=sharing).
+Download the finetuned weights from [Google Drive](https://drive.google.com/drive/folders/147qwUiIeG1AENag_VvCfeatFqwPouiKu?usp=sharing).
+
+Download the data from [Google Drive](https://drive.google.com/drive/folders/1dcyyissnkHHMUHOuMaGvh7IxHFO_QXdG?usp=sharing).
+
+The latest code of the model is adopted from YoloV5 repo: [Github](https://github.com/ultralytics/yolov5).
+
+The weights "best.pt" and the data are taken from: [Github](https://github.com/MaryamBoneh/Vehicle-Detection/tree/main?tab=readme-ov-file).
 
 ## Inside the Docker Container
 
