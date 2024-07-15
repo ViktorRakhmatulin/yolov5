@@ -1,22 +1,73 @@
+# YOLOv5 Docker Deployment
 
-# build_and_run.sh
-# Usage: ./build_and_run.sh <path_to_dataset> <path_to_weights>
+## Overview
 
-# Make the script executable
-chmod +x build_and_run.sh
+This project provides a Docker-based deployment setup for finetuned YOLOv5 model. It includes scripts for building and running a Docker container, as well as instructions for validating and using the model.
 
-# Run the script with dataset and weights paths
-./build_and_run.sh /home/viktor/Skoltech_project/dataset-vehicles /home/viktor/Skoltech_project/yolov5/weights
+## Requirements
 
-weights: 
-https://drive.google.com/drive/folders/147qwUiIeG1AENag_VvCfeatFqwPouiKu?usp=sharing
+- Docker installed on your system
+- Access to the YOLOv5 weights and dataset
 
+## Setup
 
-Inside docker commands:
-cd /usr/src/app/
+1. **Make the `build_and_run.sh` script executable**:
 
-python val.py --weights weights/best.torchscript --data data/docker.yaml --device 0 
-<!-- to assess speed metrics -->
-python val.py --weights weights/best.torchscript --data data/docker.yaml --device 0 --task speed
-<!-- to perform detection of cars on specific files, folders, video -->
-python detect.py --weights weights/best.torchscript --source test_images --device 0 --class 0
+    ```bash
+    chmod +x build_and_run.sh
+    ```
+
+2. **Run the script with the dataset and weights paths**:
+
+    ```bash
+    ./build_and_run.sh /path/to/dataset /path/to/weights
+    ```
+
+    Example:
+
+    ```bash
+    ./build_and_run.sh /home/viktor/Skoltech_project/dataset-vehicles /home/viktor/Skoltech_project/yolov5/weights
+    ```
+
+## Weights
+
+Download the pre-trained weights from [Google Drive](https://drive.google.com/drive/folders/147qwUiIeG1AENag_VvCfeatFqwPouiKu?usp=sharing).
+
+## Inside the Docker Container
+
+After running the Docker container, you can execute the following commands:
+
+1. **Change to the application directory**:
+
+    ```bash
+    cd /usr/src/app/
+    ```
+
+2. **Validate the model**:
+
+    ```bash
+    python val.py --weights weights/best.torchscript --data data/docker.yaml --device 0
+    ```
+
+3. **Assess speed metrics**:
+
+    ```bash
+    python val.py --weights weights/best.torchscript --data data/docker.yaml --device 0 --task speed
+    ```
+
+4. **Perform detection on specific files, folders, or video**:
+
+    ```bash
+    python detect.py --weights weights/best.torchscript --source test_images --device 0 --class 0
+    ```
+
+## Script Details
+
+### build_and_run.sh
+
+This script builds the Docker image and runs the container with the specified dataset and weights paths.
+
+Usage:
+
+```bash
+./build_and_run.sh <path_to_dataset> <path_to_weights>
