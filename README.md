@@ -69,20 +69,7 @@ After running the Docker container, you can execute the following commands:
     python detect.py --weights weights/best.torchscript --source test_images --device 0 --class 0
     ```
 
-## Script Details
-
-### build_and_run.sh
-
-This script builds the Docker image and runs the container with the specified dataset and weights paths.
-
-Usage:
-
-```bash
-./build_and_run.sh <path_to_dataset> <path_to_weights>
-
-```
-
-## Code Changes SUmmary:
+## Code Changes Summary:
 The focus was on reusing existing code. Metrics were calculated for specified thresholds, and lines were commented related to other classes metrics(more accurate changes would require time-consuming refactoring).
 
 ```
