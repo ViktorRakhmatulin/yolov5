@@ -39,6 +39,8 @@ The latest code of the model is adopted from YoloV5 repo: [Github](https://githu
 
 The weights "best.pt" and the data are taken from: [Github](https://github.com/MaryamBoneh/Vehicle-Detection/tree/main?tab=readme-ov-file).
 
+The results of finetuned model for all five classes: [Google Drive][https://drive.google.com/file/d/1ZfCHhmL0KP2o8E019VWMTzm_eZIuxPmi/view?usp=sharing]  
+
 ## Inside the Docker Container
 
 After running the Docker container, you can execute the following commands:
@@ -61,7 +63,7 @@ After running the Docker container, you can execute the following commands:
     python val.py --weights weights/best.torchscript --data data/docker.yaml --device 0 --task speed
     ```
 
-4. **Perform detection on specific files, folders, or video**:
+4. **Perform detection on specific files, folders, or video. The detection is limited to cars only**:
 
     ```bash
     python detect.py --weights weights/best.torchscript --source test_images --device 0 --class 0
@@ -77,3 +79,13 @@ Usage:
 
 ```bash
 ./build_and_run.sh <path_to_dataset> <path_to_weights>
+
+```
+
+## Code Changes SUmmary:
+The focus was on reusing existing code. Metrics were calculated for specified thresholds, and lines were commented related to other classes metrics(more accurate changes would require time-consuming refactoring).
+
+```
+git diff 40f490d9b0d102d3dea832fbabb300d18ab1ec87 detect.py val.py utils/metrics.py Dockerfile
+```
+
