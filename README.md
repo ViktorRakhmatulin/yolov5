@@ -11,6 +11,11 @@ This project provides a Docker-based deployment setup for finetuned YOLOv5 model
 
 ## Setup
 
+0. **Switch to the branch my_changes**:
+    ```bash
+    git checkout my_changes
+    ``` 
+
 1. **Make the `build_and_run.sh` script executable**:
 
     ```bash
