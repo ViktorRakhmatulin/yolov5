@@ -44,7 +44,7 @@ The latest code of the model is adopted from YoloV5 repo: [Github](https://githu
 
 The weights "best.pt" and the data are taken from: [Github](https://github.com/MaryamBoneh/Vehicle-Detection/tree/main?tab=readme-ov-file).
 
-The results of finetuned model for all five classes: [Google Drive][https://drive.google.com/file/d/1ZfCHhmL0KP2o8E019VWMTzm_eZIuxPmi/view?usp=sharing]  
+The results of finetuned model for all five classes: [Google Drive](https://drive.google.com/file/d/1ZfCHhmL0KP2o8E019VWMTzm_eZIuxPmi/view?usp=sharing)
 
 ## Inside the Docker Container
 
