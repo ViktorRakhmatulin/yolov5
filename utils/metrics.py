@@ -60,26 +60,26 @@ def ap_per_class(tp, conf, pred_cls, target_cls, plot=False, save_dir=".", names
         n_p = i.sum()  # number of predictions
         if n_p == 0 or n_l == 0:
             continue
-
+        # iou_index = 0 # for mAP@0.5
+        iou_index = 6 # for mAP@0.8
         # Accumulate FPs and TPs
         fpc = (1 - tp[i]).cumsum(0)
         tpc = tp[i].cumsum(0)
         
         recall = tpc / (n_l + eps)  # recall curve
-        # Recall for iou = 0.5
-        r[ci] = np.interp(-px, -conf[i], recall[:, 0], left=0)  # negative x, xp because xp decreases
+        # Recall for iou = 0.8
+        r[ci] = np.interp(-px, -conf[i], recall[:, iou_index], left=0)  # negative x, xp because xp decreases
 
         precision = tpc / (tpc + fpc)  # precision curve
-        # Precision for iou = 0.5
-        p[ci] = np.interp(-px, -conf[i], precision[:, 0], left=1)  # p at pr_score
+        # Precision for iou = 0.8
+        p[ci] = np.interp(-px, -conf[i], precision[:, iou_index], left=1)  # p at pr_score
         
         target_pr = 0
         target_r = 0
         target_f1 = 0
         
         if ci == 0: # collect stats only for cars class for iou 0.8 and confidence 0.9
-            iou_index = 6
-            pr_at_iou = np.interp(-px, -conf[i], precision[:, iou_index], left=  1)
+            pr_at_iou = np.interp(-px, -conf[i], precision[:, iou_index], left = 1)
             r_at_iou = np.interp(-px, -conf[i], recall[:, iou_index], left = 0)
             confidence_index = 899 # 0 corresponds to 0.0 conf., 999 to 1.0
             target_pr = pr_at_iou[confidence_index]
@@ -88,10 +88,12 @@ def ap_per_class(tp, conf, pred_cls, target_cls, plot=False, save_dir=".", names
             
         # store vals for 
         # AP from recall-precision curve
+        
         for j in range(tp.shape[1]):
             ap[ci, j], mpre, mrec = compute_ap(recall[:, j], precision[:, j])
-            if plot and j == 0:
-                py.append(np.interp(px, mrec, mpre))  # precision at mAP@0.5
+            if plot and j == iou_index:
+                # py.append(np.interp(px, mrec, mpre))  # precision at mAP@0.5
+                py.append(np.interp(px, mrec, mpre))  # precision at mAP@0.8
 
     # Compute F1 (harmonic mean of precision and recall)
     f1 = 2 * p * r / (p + r + eps)
