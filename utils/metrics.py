@@ -4,7 +4,7 @@
 import math
 import warnings
 from pathlib import Path
-
+from matplotlib.ticker import MultipleLocator
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
@@ -355,26 +355,30 @@ def wh_iou(wh1, wh2, eps=1e-7):
 
 @threaded
 def plot_pr_curve(px, py, ap, save_dir=Path("pr_curve.png"), names=()):
-    """Plots precision-recall curve, optionally per class, saving to `save_dir`; `px`, `py` are lists, `ap` is Nx2
-    array, `names` optional.
+    """Plots precision-recall curve, optionally per class, saving to save_dir; px, py are lists, ap is Nx2
+    array, names optional.
     """
     fig, ax = plt.subplots(1, 1, figsize=(9, 6), tight_layout=True)
     py = np.stack(py, axis=1)
 
     if 0 < len(names) < 21:  # display per-class legend if < 21 classes
         for i, y in enumerate(py.T):
-            ax.plot(px, y, linewidth=1, label=f"{names[0]} {ap[0, 0]:.3f}")
+            ax.plot(px, y, linewidth=1, label=f"{names[0]}")
             break 
     else:
         ax.plot(px, py, linewidth=1, color="grey")  # plot(recall, precision)
 
     # ax.plot(px, py.mean(1), linewidth=3, color="blue", label="all classes %.3f mAP@0.5" % ap[:, 0].mean())
-    ax.set_xlabel("Recall")
-    ax.set_ylabel("Precision")
+    ax.set_xlabel("Recall", fontsize=16)  
+    ax.set_ylabel("Precision", fontsize=16) 
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
-    ax.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
-    ax.set_title("Precision-Recall Curve")
+    ax.xaxis.set_major_locator(MultipleLocator(0.1))
+    ax.yaxis.set_major_locator(MultipleLocator(0.1))
+    ax.legend(bbox_to_anchor=(1.04, 1), loc="upper left", fontsize=14)  
+    ax.set_title("Precision-Recall Curve", fontsize=16)  
+    ax.tick_params(axis='both', which='major', labelsize=13)
+    ax.grid(True)
     fig.savefig(save_dir, dpi=250)
     plt.close(fig)
 
@@ -393,11 +397,18 @@ def plot_mc_curve(px, py, save_dir=Path("mc_curve.png"), names=(), xlabel="Confi
 
     y = smooth(py.mean(0), 0.05)
     # ax.plot(px, y, linewidth=3, color="blue", label=f"all classes {y.max():.2f} at {px[y.argmax()]:.3f}")
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
+    ax.set_xlabel(xlabel, fontsize=16)  
+    ax.set_ylabel(ylabel, fontsize=16) 
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
-    ax.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
-    ax.set_title(f"{ylabel}-Confidence Curve")
+    ax.xaxis.set_major_locator(MultipleLocator(0.1))
+    ax.yaxis.set_major_locator(MultipleLocator(0.1))
+    ax.legend(bbox_to_anchor=(1.04, 1), loc="upper left", fontsize=14)  
+    ax.set_title(f"{ylabel}-Confidence Curve", fontsize=16) 
+
+    ax.grid(True) 
+
+    ax.tick_params(axis='both', which='major', labelsize=13)
+
     fig.savefig(save_dir, dpi=250)
     plt.close(fig)
